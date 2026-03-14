@@ -683,6 +683,7 @@ struct XorAB {};
 struct OrAB {};
 struct AddAB {};
 struct IncA {};
+struct DecA {};
 struct SwapAB {};
 struct PushA {};
 struct PushB {};
@@ -741,6 +742,13 @@ template<typename RegA, typename RegB, typename Stack>
 struct VMStep<ProgramState<RegA, RegB, Stack, IncA>> {
     using Next = typename VMStep<
         ProgramState<typename Add<BytePair<RegA, B01>>::Result, RegB, Stack, Nop>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack>
+struct VMStep<ProgramState<RegA, RegB, Stack, DecA>> {
+    using Next = typename VMStep<
+        ProgramState<typename Add<BytePair<RegA, BFF>>::Result, RegB, Stack, Nop>
     >::Next;
 };
 
