@@ -624,33 +624,65 @@ template<> struct HalfAdder<BitPair<F, T>> { using Result = T; using Carry = F; 
 template<> struct HalfAdder<BitPair<T, F>> { using Result = T; using Carry = F; };
 template<> struct HalfAdder<BitPair<T, T>> { using Result = F; using Carry = T; };
 
-template <typename A, typename B, typename C>
-struct BitTripple {};
+template <typename A, typename B, typename C> struct BitTrio {};
 
 template <typename T> struct FullAdder;
-template<> struct FullAdder<BitTripple<F, F, F>> { using Result = F; using Carry = F; };
-template<> struct FullAdder<BitTripple<F, F, T>> { using Result = T; using Carry = F; };
-template<> struct FullAdder<BitTripple<F, T, F>> { using Result = T; using Carry = F; };
-template<> struct FullAdder<BitTripple<F, T, T>> { using Result = T; using Carry = T; };
-template<> struct FullAdder<BitTripple<T, F, F>> { using Result = T; using Carry = F; };
-template<> struct FullAdder<BitTripple<T, F, T>> { using Result = F; using Carry = T; };
-template<> struct FullAdder<BitTripple<T, T, F>> { using Result = F; using Carry = T; };
-template<> struct FullAdder<BitTripple<T, T, T>> { using Result = T; using Carry = T; };
+template<> struct FullAdder<BitTrio<F, F, F>> { using Result = F; using Carry = F; };
+template<> struct FullAdder<BitTrio<F, F, T>> { using Result = T; using Carry = F; };
+template<> struct FullAdder<BitTrio<F, T, F>> { using Result = T; using Carry = F; };
+template<> struct FullAdder<BitTrio<F, T, T>> { using Result = F; using Carry = T; };
+template<> struct FullAdder<BitTrio<T, F, F>> { using Result = T; using Carry = F; };
+template<> struct FullAdder<BitTrio<T, F, T>> { using Result = F; using Carry = T; };
+template<> struct FullAdder<BitTrio<T, T, F>> { using Result = F; using Carry = T; };
+template<> struct FullAdder<BitTrio<T, T, T>> { using Result = T; using Carry = T; };
+
+template <typename T> using HalfAdder_r = typename HalfAdder<T>::Result;
+template <typename T> using HalfAdder_c = typename HalfAdder<T>::Carry;
+
+template <typename T> using FullAdder_r = typename FullAdder<T>::Result;
+template <typename T> using FullAdder_c = typename FullAdder<T>::Carry;
+
+template <typename A, typename B> using BitPair_0 = BitPair<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_1 = BitPair<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_2 = BitPair<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_3 = BitPair<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_4 = BitPair<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_5 = BitPair<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_6 = BitPair<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_7 = BitPair<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>>;
+
+template <typename A, typename B, typename C> using BitTrio_0 = BitTrio<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_1 = BitTrio<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_2 = BitTrio<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_3 = BitTrio<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_4 = BitTrio<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_5 = BitTrio<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_6 = BitTrio<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_7 = BitTrio<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>, C>;
 
 template<typename T> struct Add;
 
-// TODO: fix arithmetic ops
-
-// template<typename A, typename B>
-// struct Add<BytePair<A, B>> {
-//     using Result = 
-// };
+template<typename A, typename B>
+struct Add<BytePair<A, B>> {
+    using Result = typename Convert<std::tuple<
+        HalfAdder_r<BitPair_0<A, B>>,
+        FullAdder_r<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>,
+        FullAdder_r<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>,
+        FullAdder_r<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>,
+        FullAdder_r<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>,
+        FullAdder_r<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>,
+        FullAdder_r<BitTrio_6<A, B, FullAdder_c<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>>>,
+        FullAdder_r<BitTrio_7<A, B, FullAdder_c<BitTrio_6<A, B, FullAdder_c<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>>>>>
+    >>::Result;
+};
 
 // instructions
 struct NotA {};
 struct AndAB {};
 struct XorAB {};
 struct OrAB {};
+struct AddAB {};
+struct IncA {};
 struct SwapAB {};
 struct PushA {};
 struct PushB {};
@@ -695,6 +727,20 @@ template<typename RegA, typename RegB, typename Stack>
 struct VMStep<ProgramState<RegA, RegB, Stack, OrAB>> {
     using Next = typename VMStep<
         ProgramState<typename Or<BytePair<RegA, RegB>>::Result, RegB, Stack, Nop>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack>
+struct VMStep<ProgramState<RegA, RegB, Stack, AddAB>> {
+    using Next = typename VMStep<
+        ProgramState<typename Add<BytePair<RegA, RegB>>::Result, RegB, Stack, Nop>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack>
+struct VMStep<ProgramState<RegA, RegB, Stack, IncA>> {
+    using Next = typename VMStep<
+        ProgramState<typename Add<BytePair<RegA, B01>>::Result, RegB, Stack, Nop>
     >::Next;
 };
 
