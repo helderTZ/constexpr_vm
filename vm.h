@@ -558,9 +558,6 @@ template<typename T> struct Not {
 template<> struct Not<T> { using Result = F; };
 template<> struct Not<F> { using Result = T; };
 
-
-// TODO: fix binary ops
-
 template<typename T> struct And;
 template<> struct And<BitPair<F, F>> { using Result = F; };
 template<> struct And<BitPair<F, T>> { using Result = F; };
@@ -569,14 +566,16 @@ template<> struct And<BitPair<T, T>> { using Result = T; };
 
 template<typename A, typename B>
 struct And<BytePair<A, B>> {
-    using Result = typename Convert<
-        And<
-            typename BitPair<
-                typename Convert<A>::Result,
-                typename Convert<B>::Result
-            >::Result
-        >
-    >::Result;
+    using Result = typename Convert<std::tuple<
+        typename And<BitPair<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>>>::Result,
+        typename And<BitPair<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>>>::Result
+    >>::Result;
 };
 
 template<typename T> struct Or;
@@ -587,14 +586,16 @@ template<> struct Or<BitPair<T, T>> { using Result = T; };
 
 template<typename A, typename B>
 struct Or<BytePair<A, B>> {
-    using Result = typename Convert<
-        Or<
-            typename BitPair<
-                typename Convert<A>::Result,
-                typename Convert<B>::Result
-            >::Result
-        >
-    >::Result;
+    using Result = typename Convert<std::tuple<
+        typename Or<BitPair<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>>>::Result,
+        typename Or<BitPair<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>>>::Result
+    >>::Result;
 };
 
 template<typename T> struct Xor;
@@ -605,14 +606,16 @@ template<> struct Xor<BitPair<T, T>> { using Result = F; };
 
 template<typename A, typename B>
 struct Xor<BytePair<A, B>> {
-    using Result = typename Convert<
-        Xor<
-            typename BitPair<
-                typename Convert<A>::Result,
-                typename Convert<B>::Result
-            >::Result
-        >
-    >::Result;
+    using Result = typename Convert<std::tuple<
+        typename Xor<BitPair<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>>>::Result,
+        typename Xor<BitPair<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>>>::Result
+    >>::Result;
 };
 
 template<typename T> struct HalfAdder;
