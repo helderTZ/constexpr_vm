@@ -9,6 +9,8 @@ int main() {
     using PS4 = ProgramState<B02, B01, std::tuple<>, IncA>;
     using PS5 = ProgramState<B02, B01, std::tuple<>, DecA>;
     using PS6 = ProgramState<B04, B04, std::tuple<>, AddAB>;
+    using PS7 = ProgramState<B00, B01, std::tuple<BFF>, PopA>;
+    using PS8 = ProgramState<B00, B01, std::tuple<BFF>, PopB>;
 
     VMStep<PS1> vm1;
     VMStep<PS2> vm2;
@@ -16,6 +18,8 @@ int main() {
     VMStep<PS4> vm4;
     VMStep<PS5> vm5;
     VMStep<PS6> vm6;
+    VMStep<PS7> vm7;
+    VMStep<PS8> vm8;
 
     std::cout << "output NotA  : 0x" << static_cast<int>(Valued<decltype(vm1)>::VALUE) << "\n";
     std::cout << "output PushA : 0x" << static_cast<int>(Valued<decltype(vm2)>::VALUE) << "\n";
@@ -23,6 +27,8 @@ int main() {
     std::cout << "output IncA  : 0x" << static_cast<int>(Valued<decltype(vm4)>::VALUE) << "\n";
     std::cout << "output DecA  : 0x" << static_cast<int>(Valued<decltype(vm5)>::VALUE) << "\n";
     std::cout << "output AddAB : 0x" << static_cast<int>(Valued<decltype(vm6)>::VALUE) << "\n";
+    std::cout << "output PopA  : 0x" << static_cast<int>(Valued<decltype(vm7)>::VALUE) << "\n";
+    std::cout << "output PopB  : 0x" << static_cast<int>(Valued<decltype(vm8)>::VALUE) << "\n";
 
     return 0;
 }

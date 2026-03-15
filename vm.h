@@ -676,6 +676,17 @@ struct Add<BytePair<A, B>> {
     >>::Result;
 };
 
+template <typename T> struct tuple_head_tail {};
+
+template <typename Head, typename... Tail>
+struct tuple_head_tail<std::tuple<Head, Tail...>> {
+    using head = Head;
+    using tail = std::tuple<Tail...>;
+};
+
+template <typename T> using tuple_head = typename tuple_head_tail<T>::head;
+template <typename T> using tuple_tail = typename tuple_head_tail<T>::tail;
+
 // instructions
 struct NotA {};
 struct AndAB {};
@@ -770,6 +781,20 @@ template<typename RegA, typename RegB, typename Stack>
 struct VMStep<ProgramState<RegA, RegB, Stack, PushB>> {
     using Next = typename VMStep<
         ProgramState<RegA, RegB, std::tuple<RegB, Stack>, Nop>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack>
+struct VMStep<ProgramState<RegA, RegB, Stack, PopA>> {
+    using Next = typename VMStep<
+        ProgramState<tuple_head<Stack>, RegB, tuple_tail<Stack>, Nop>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack>
+struct VMStep<ProgramState<RegA, RegB, Stack, PopB>> {
+    using Next = typename VMStep<
+        ProgramState<RegA, tuple_head<Stack>, tuple_tail<Stack>, Nop>
     >::Next;
 };
 
