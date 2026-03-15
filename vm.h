@@ -642,37 +642,37 @@ template <typename T> using HalfAdder_c = typename HalfAdder<T>::Carry;
 template <typename T> using FullAdder_r = typename FullAdder<T>::Result;
 template <typename T> using FullAdder_c = typename FullAdder<T>::Carry;
 
-template <typename A, typename B> using BitPair_0 = BitPair<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_1 = BitPair<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_2 = BitPair<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_3 = BitPair<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_4 = BitPair<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_5 = BitPair<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_6 = BitPair<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>>;
-template <typename A, typename B> using BitPair_7 = BitPair<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_0 = BitPair<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_1 = BitPair<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_2 = BitPair<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_3 = BitPair<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_4 = BitPair<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_5 = BitPair<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_6 = BitPair<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>>;
+template <typename A, typename B> using BitPair_7 = BitPair<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>>;
 
-template <typename A, typename B, typename C> using BitTrio_0 = BitTrio<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_1 = BitTrio<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_2 = BitTrio<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_3 = BitTrio<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_4 = BitTrio<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_5 = BitTrio<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_6 = BitTrio<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>, C>;
-template <typename A, typename B, typename C> using BitTrio_7 = BitTrio<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_0 = BitTrio<std::tuple_element_t<7, typename Convert<A>::Result>, std::tuple_element_t<7, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_1 = BitTrio<std::tuple_element_t<6, typename Convert<A>::Result>, std::tuple_element_t<6, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_2 = BitTrio<std::tuple_element_t<5, typename Convert<A>::Result>, std::tuple_element_t<5, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_3 = BitTrio<std::tuple_element_t<4, typename Convert<A>::Result>, std::tuple_element_t<4, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_4 = BitTrio<std::tuple_element_t<3, typename Convert<A>::Result>, std::tuple_element_t<3, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_5 = BitTrio<std::tuple_element_t<2, typename Convert<A>::Result>, std::tuple_element_t<2, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_6 = BitTrio<std::tuple_element_t<1, typename Convert<A>::Result>, std::tuple_element_t<1, typename Convert<B>::Result>, C>;
+template <typename A, typename B, typename C> using BitTrio_7 = BitTrio<std::tuple_element_t<0, typename Convert<A>::Result>, std::tuple_element_t<0, typename Convert<B>::Result>, C>;
 
 template<typename T> struct Add;
 
 template<typename A, typename B>
 struct Add<BytePair<A, B>> {
     using Result = typename Convert<std::tuple<
-        HalfAdder_r<BitPair_0<A, B>>,
-        FullAdder_r<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>,
-        FullAdder_r<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>,
-        FullAdder_r<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>,
-        FullAdder_r<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>,
-        FullAdder_r<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>,
+        FullAdder_r<BitTrio_7<A, B, FullAdder_c<BitTrio_6<A, B, FullAdder_c<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>>>>>,
         FullAdder_r<BitTrio_6<A, B, FullAdder_c<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>>>,
-        FullAdder_r<BitTrio_7<A, B, FullAdder_c<BitTrio_6<A, B, FullAdder_c<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>>>>>
+        FullAdder_r<BitTrio_5<A, B, FullAdder_c<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>>>,
+        FullAdder_r<BitTrio_4<A, B, FullAdder_c<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>>>,
+        FullAdder_r<BitTrio_3<A, B, FullAdder_c<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>>>,
+        FullAdder_r<BitTrio_2<A, B, FullAdder_c<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>>>,
+        FullAdder_r<BitTrio_1<A, B, HalfAdder_c<BitPair_0<A, B>>>>,
+        HalfAdder_r<BitPair_0<A, B>>
     >>::Result;
 };
 
@@ -710,91 +710,91 @@ struct ProgramState {};
 template <typename T> struct VMStep;
 
 template <typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, Nop>> {
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<>>> {
     using Next = RegA;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, NotA>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<NotA, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Not<RegA>::Result, RegB, Stack, Nop>
+        ProgramState<typename Not<RegA>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, AndAB>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<AndAB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename And<BytePair<RegA, RegB>>::Result, RegB, Stack, Nop>
+        ProgramState<typename And<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, XorAB>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<XorAB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Xor<BytePair<RegA, RegB>>::Result, RegB, Stack, Nop>
+        ProgramState<typename Xor<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, OrAB>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<OrAB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Or<BytePair<RegA, RegB>>::Result, RegB, Stack, Nop>
+        ProgramState<typename Or<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, AddAB>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<AddAB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Add<BytePair<RegA, RegB>>::Result, RegB, Stack, Nop>
+        ProgramState<typename Add<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, IncA>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<IncA, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Add<BytePair<RegA, B01>>::Result, RegB, Stack, Nop>
+        ProgramState<typename Add<BytePair<RegA, B01>>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, DecA>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<DecA, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Add<BytePair<RegA, BFF>>::Result, RegB, Stack, Nop>
+        ProgramState<typename Add<BytePair<RegA, BFF>>::Result, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, SwapAB>> {
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<SwapAB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<RegB, RegA, Stack, Nop>
+        ProgramState<RegB, RegA, Stack, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, PushA>> {
+template<typename RegA, typename RegB, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushA, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, std::tuple<RegA, Stack>, Nop>
+        ProgramState<RegA, RegB, std::tuple<RegA, Stack...>, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, PushB>> {
+template<typename RegA, typename RegB, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, std::tuple<RegB, Stack>, Nop>
+        ProgramState<RegA, RegB, std::tuple<RegB, Stack...>, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, PopA>> {
+template<typename RegA, typename RegB, typename Head, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<PopA, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<tuple_head<Stack>, RegB, tuple_tail<Stack>, Nop>
+        ProgramState<Head, RegB, std::tuple<Stack...>, std::tuple<Text...>>
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack>
-struct VMStep<ProgramState<RegA, RegB, Stack, PopB>> {
+template<typename RegA, typename RegB, typename Head, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<PopB, Text...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, tuple_head<Stack>, tuple_tail<Stack>, Nop>
+        ProgramState<RegA, Head, std::tuple<Stack...>, std::tuple<Text...>>
     >::Next;
 };
 
