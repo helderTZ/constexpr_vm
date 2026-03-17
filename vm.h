@@ -970,6 +970,7 @@ struct SwapTop {};
 struct Nop {};
 struct PushAIfNotZero {};
 template <typename T> struct JumpForward {};
+template <typename T> struct JumpForwardIfA {};
 
 template <typename RegA, typename RegB, typename Stack, typename Text>
 struct ProgramState {};
@@ -1097,6 +1098,20 @@ template<typename RegA, typename RegB, typename Stack, typename... Text, typenam
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<JumpForward<Jump>, Text...>>> {
     using Next = typename VMStep<
         ProgramState<RegA, RegB, Stack, tuple_tail_t<Valued<Jump>::VALUE, std::tuple<Text...>>>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack, typename... Text, typename Jump>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<JumpForwardIfA<Jump>, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<RegA, RegB, Stack, tuple_tail_t<Valued<Jump>::VALUE, std::tuple<Text...>>>
+    >::Next;
+};
+
+template<typename RegB, typename Stack, typename... Text, typename Jump>
+struct VMStep<ProgramState<B00, RegB, Stack, std::tuple<JumpForwardIfA<Jump>, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<B00, RegB, Stack, std::tuple<Text...>>
     >::Next;
 };
 

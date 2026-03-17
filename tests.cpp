@@ -87,6 +87,14 @@ void test_JumpForward() {
     static_assert(Valued<VMStep<PS3>>::VALUE == 0x00, "testing JumpForward<B02>: NOK");
 }
 
+void test_JumpForwardIfA() {
+    using PS1 = ProgramState<B00, B00, std::tuple<>, std::tuple<JumpForwardIfA<B01>, IncA, IncA>>;
+    static_assert(Valued<VMStep<PS1>>::VALUE == 0x02, "testing JumpForwardIfA<B01> 0x00: NOK");
+
+    using PS2 = ProgramState<B10, B00, std::tuple<>, std::tuple<JumpForward<B01>, IncA, IncA>>;
+    static_assert(Valued<VMStep<PS2>>::VALUE == 0x11, "testing JumpForwardIfA<B01> 0x10: NOK");
+}
+
 void test_Sum1through9() {
     using PS = ProgramState<B00, B00, std::tuple<>, std::tuple<
         IncA, PushA,
