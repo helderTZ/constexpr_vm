@@ -703,6 +703,7 @@ struct Pop {};
 struct SwapAB {};
 struct SwapTop {};
 struct Nop {};
+struct PushAIfNotZero {};
 
 template <typename RegA, typename RegB, typename Stack, typename Text>
 struct ProgramState {};
@@ -809,6 +810,20 @@ template<typename RegA, typename RegB, typename Head1, typename Head2, typename.
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Head1, Head2, Stack...>, std::tuple<SwapTop, Text...>>> {
     using Next = typename VMStep<
         ProgramState<RegB, RegA, std::tuple<Head2, Head1, Stack...>, std::tuple<Text...>>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushAIfNotZero, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<RegA, RegB, std::tuple<RegA, Stack...>, std::tuple<Text...>>
+    >::Next;
+};
+
+template<typename RegB, typename... Stack, typename... Text>
+struct VMStep<ProgramState<B00, RegB, std::tuple<Stack...>, std::tuple<PushAIfNotZero, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<B00, RegB, std::tuple<Stack...>, std::tuple<Text...>>
     >::Next;
 };
 

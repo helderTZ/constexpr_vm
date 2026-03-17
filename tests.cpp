@@ -68,6 +68,14 @@ void test_SwapTop() {
     static_assert(Valued<VMStep<PS>>::VALUE == 0x02, "testing SwapAB: NOK");
 }
 
+void test_PushAIfNotZero() {
+    using PS1 = ProgramState<B01, B00, std::tuple<BAA>, std::tuple<PushAIfNotZero, IncA, PopA>>;
+    static_assert(Valued<VMStep<PS1>>::VALUE == 0x01, "testing PushAIfNotZero 0x01: NOK");
+
+    using PS2 = ProgramState<B00, B00, std::tuple<BAA>, std::tuple<PushAIfNotZero, IncA, PopA>>;
+    static_assert(Valued<VMStep<PS2>>::VALUE == 0xAA, "testing PushAIfNotZero 0x00: NOK");
+}
+
 void test_Sum1through9() {
     using PS = ProgramState<B00, B00, std::tuple<>, std::tuple<
         IncA, PushA,
