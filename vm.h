@@ -695,12 +695,12 @@ struct OrAB {};
 struct AddAB {};
 struct IncA {};
 struct DecA {};
-struct SwapAB {};
 struct PushA {};
 struct PushB {};
 struct PopA {};
 struct PopB {};
 struct Pop {};
+struct SwapAB {};
 struct SwapTop {};
 struct Nop {};
 
@@ -763,13 +763,6 @@ struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<DecA, Text...>>> {
     >::Next;
 };
 
-template<typename RegA, typename RegB, typename Stack, typename... Text>
-struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<SwapAB, Text...>>> {
-    using Next = typename VMStep<
-        ProgramState<RegB, RegA, Stack, std::tuple<Text...>>
-    >::Next;
-};
-
 template<typename RegA, typename RegB, typename... Stack, typename... Text>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushA, Text...>>> {
     using Next = typename VMStep<
@@ -795,6 +788,27 @@ template<typename RegA, typename RegB, typename Head, typename... Stack, typenam
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<PopB, Text...>>> {
     using Next = typename VMStep<
         ProgramState<RegA, Head, std::tuple<Stack...>, std::tuple<Text...>>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Head, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<Pop, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<Text...>>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<SwapAB, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<RegB, RegA, Stack, std::tuple<Text...>>
+    >::Next;
+};
+
+template<typename RegA, typename RegB, typename Head1, typename Head2, typename... Stack, typename... Text>
+struct VMStep<ProgramState<RegA, RegB, std::tuple<Head1, Head2, Stack...>, std::tuple<SwapTop, Text...>>> {
+    using Next = typename VMStep<
+        ProgramState<RegB, RegA, std::tuple<Head2, Head1, Stack...>, std::tuple<Text...>>
     >::Next;
 };
 
