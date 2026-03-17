@@ -3,15 +3,15 @@
 #include "vm.h"
 
 int main() {
-    using PS1 = ProgramState<B00, B01, std::tuple<>, std::tuple<NotA>>;
-    using PS2 = ProgramState<BA0, B01, std::tuple<>, std::tuple<PushA>>;
-    using PS3 = ProgramState<B0A, B05, std::tuple<>, std::tuple<OrAB>>;
-    using PS4 = ProgramState<B00, B01, std::tuple<>, std::tuple<IncA>>;
-    using PS5 = ProgramState<B02, B01, std::tuple<>, std::tuple<DecA>>;
-    using PS6 = ProgramState<B10, B10, std::tuple<>, std::tuple<AddAB>>;
-    using PS7 = ProgramState<B00, B01, std::tuple<BFF>, std::tuple<PopA>>;
-    using PS8 = ProgramState<B00, B01, std::tuple<BFF>, std::tuple<PopB>>;
-    using PS9 = ProgramState<B00, B00, std::tuple<BFF>, std::tuple<IncA, IncA>>;
+    using PS1 = ProgramState<B00, B01, std::tuple<>, std::tuple<NotA>, std::tuple<>>;
+    using PS2 = ProgramState<BA0, B01, std::tuple<>, std::tuple<PushA>, std::tuple<>>;
+    using PS3 = ProgramState<B0A, B05, std::tuple<>, std::tuple<OrAB>, std::tuple<>>;
+    using PS4 = ProgramState<B00, B01, std::tuple<>, std::tuple<IncA>, std::tuple<>>;
+    using PS5 = ProgramState<B02, B01, std::tuple<>, std::tuple<DecA>, std::tuple<>>;
+    using PS6 = ProgramState<B10, B10, std::tuple<>, std::tuple<AddAB>, std::tuple<>>;
+    using PS7 = ProgramState<B00, B01, std::tuple<BFF>, std::tuple<PopA>, std::tuple<>>;
+    using PS8 = ProgramState<B00, B01, std::tuple<BFF>, std::tuple<PopB>, std::tuple<>>;
+    using PS9 = ProgramState<B00, B00, std::tuple<BFF>, std::tuple<IncA, IncA>, std::tuple<>>;
     using PS10 = ProgramState<B00, B00, std::tuple<>, std::tuple<
         IncA, PushA,
         IncA, PushA,
@@ -30,7 +30,7 @@ int main() {
         PopB, AddAB,
         PopB, AddAB,
         PopB, AddAB
-    >>;
+    >, std::tuple<>>;
 
     VMStep<PS1> vm1;
     VMStep<PS2> vm2;
