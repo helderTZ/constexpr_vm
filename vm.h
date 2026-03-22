@@ -967,6 +967,22 @@ using tuple_tail_t = typename tuple_tail_impl<
     std::make_index_sequence<std::tuple_size<Tuple>::value - Offset>
 >::type;
 
+// get head of tuple
+template <std::size_t N, typename Tuple, typename Seq>
+struct tuple_head_impl {};
+
+template <std::size_t N, typename Tuple, std::size_t... Is>
+struct tuple_head_impl<N, Tuple, std::index_sequence<Is...>> {
+    using type = std::tuple<std::tuple_element_t<Is, Tuple>...>;
+};
+
+template <std::size_t N, typename Tuple>
+using tuple_head_t = typename tuple_head_impl<
+    N,
+    Tuple,
+    std::make_index_sequence<N>
+>::type;
+
 // combine two tuples into a single one
 template <typename Tuple1, typename Tuple2>
 struct combine_tuple {};
@@ -1017,161 +1033,172 @@ struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<>, History>> {
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<NotA, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Not<RegA>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<NotA, History...>>
+        ProgramState<typename Not<RegA>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., NotA>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<AndAB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename And<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<AndAB, History...>>
+        ProgramState<typename And<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., AndAB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<XorAB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Xor<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<XorAB, History...>>
+        ProgramState<typename Xor<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., XorAB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<OrAB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Or<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<OrAB, History...>>
+        ProgramState<typename Or<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., OrAB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<EqAB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Eq<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<EqAB, History...>>
+        ProgramState<typename Eq<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., EqAB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<AddAB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Add<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<AddAB, History...>>
+        ProgramState<typename Add<BytePair<RegA, RegB>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., AddAB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<IncA, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Add<BytePair<RegA, B01>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<IncA, History...>>
+        ProgramState<typename Add<BytePair<RegA, B01>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., IncA>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<DecA, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<typename Add<BytePair<RegA, BFF>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<DecA, History...>>
+        ProgramState<typename Add<BytePair<RegA, BFF>>::Result, RegB, Stack, std::tuple<Text...>, std::tuple<History..., DecA>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename Jump, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<SetA<Jump>, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<Jump, RegB, Stack, std::tuple<Text...>, std::tuple<SetA<Jump>, History...>>
+        ProgramState<Jump, RegB, Stack, std::tuple<Text...>, std::tuple<History..., SetA<Jump>>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename Jump, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<SetB<Jump>, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, Jump, Stack, std::tuple<Text...>, std::tuple<SetB<Jump>, History...>>
+        ProgramState<RegA, Jump, Stack, std::tuple<Text...>, std::tuple<History..., SetB<Jump>>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushA, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, std::tuple<RegA, Stack...>, std::tuple<Text...>, std::tuple<PushA, History...>>
+        ProgramState<RegA, RegB, std::tuple<RegA, Stack...>, std::tuple<Text...>, std::tuple<History..., PushA>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, std::tuple<RegB, Stack...>, std::tuple<Text...>, std::tuple<PushB, History...>>
+        ProgramState<RegA, RegB, std::tuple<RegB, Stack...>, std::tuple<Text...>, std::tuple<History..., PushB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Head, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<PopA, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<Head, RegB, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<PopA, History...>>
+        ProgramState<Head, RegB, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<History..., PopA>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Head, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<PopB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, Head, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<PopB, History...>>
+        ProgramState<RegA, Head, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<History..., PopB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Head, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Head, Stack...>, std::tuple<Pop, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<Pop, History...>>
+        ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<History..., Pop>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<SwapAB, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegB, RegA, Stack, std::tuple<Text...>, std::tuple<SwapAB, History...>>
+        ProgramState<RegB, RegA, Stack, std::tuple<Text...>, std::tuple<History..., SwapAB>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Head1, typename Head2, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Head1, Head2, Stack...>, std::tuple<SwapTop, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegB, RegA, std::tuple<Head2, Head1, Stack...>, std::tuple<Text...>, std::tuple<SwapTop, History...>>
+        ProgramState<RegB, RegA, std::tuple<Head2, Head1, Stack...>, std::tuple<Text...>, std::tuple<History..., SwapTop>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<RegA, RegB, std::tuple<Stack...>, std::tuple<PushAIfNotZero, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, std::tuple<RegA, Stack...>, std::tuple<Text...>, std::tuple<PushAIfNotZero, History...>>
+        ProgramState<RegA, RegB, std::tuple<RegA, Stack...>, std::tuple<Text...>, std::tuple<History..., PushAIfNotZero>>
     >::Next;
 };
 
 template<typename RegB, typename... Stack, typename... Text, typename... History>
 struct VMStep<ProgramState<B00, RegB, std::tuple<Stack...>, std::tuple<PushAIfNotZero, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<B00, RegB, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<PushAIfNotZero, History...>>
+        ProgramState<B00, RegB, std::tuple<Stack...>, std::tuple<Text...>, std::tuple<History..., PushAIfNotZero>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename Jump, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<JumpForward<Jump>, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, Stack, tuple_tail_t<Valued<Jump>::VALUE, std::tuple<Text...>>, std::tuple<JumpForward<Jump>, History...>>
+        ProgramState<RegA, RegB, Stack, tuple_tail_t<Valued<Jump>::VALUE, std::tuple<Text...>>, std::tuple<History..., JumpForward<Jump>>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename Jump, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<JumpForwardIfA<Jump>, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, Stack, tuple_tail_t<Valued<Jump>::VALUE, std::tuple<Text...>>, std::tuple<JumpForwardIfA<Jump>, History...>>
+        ProgramState<RegA, RegB, Stack, tuple_tail_t<Valued<Jump>::VALUE, std::tuple<Text...>>, std::tuple<History..., JumpForwardIfA<Jump>>>
     >::Next;
 };
 
 template<typename RegB, typename Stack, typename... Text, typename Jump, typename... History>
 struct VMStep<ProgramState<B00, RegB, Stack, std::tuple<JumpForwardIfA<Jump>, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<B00, RegB, Stack, std::tuple<Text...>, std::tuple<JumpForwardIfA<Jump>, History...>>
+        ProgramState<B00, RegB, Stack, std::tuple<Text...>, std::tuple<History..., JumpForwardIfA<Jump>>>
     >::Next;
 };
 
 template<typename RegA, typename RegB, typename Stack, typename... Text, typename Jump, typename... History>
 struct VMStep<ProgramState<RegA, RegB, Stack, std::tuple<JumpBackward<Jump>, Text...>, std::tuple<History...>>> {
     using Next = typename VMStep<
-        ProgramState<RegA, RegB, Stack, combine_tuple_t<tuple_tail_t<Valued<Jump>::VALUE, std::tuple<History...>>, std::tuple<Text...>>, std::tuple<JumpBackward<Jump>, History...>>
+        ProgramState<
+            RegA,
+            RegB,
+            Stack,
+            combine_tuple_t<
+                tuple_tail_t<
+                    Valued<Jump>::VALUE,
+                    std::tuple<History...>
+                >,
+                std::tuple<Text...>
+            >,
+            std::tuple<History..., JumpBackward<Jump>>>
     >::Next;
 };
 

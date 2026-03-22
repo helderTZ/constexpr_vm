@@ -113,6 +113,11 @@ void test_JumpForwardIfA() {
     static_assert(Valued<VMStep<PS2>>::VALUE == 0x11, "testing JumpForwardIfA<B01> 0x10: NOK");
 }
 
+void test_JumpBackward() {
+    using PS = ProgramState<B00, B10, std::tuple<>, std::tuple<IncA, PushA, EqAB, JumpForwardIfA<B03>, PopA, JumpBackward<B05>, SetA<B20>>, std::tuple<>>;
+    static_assert(Valued<VMStep<PS>>::VALUE == 0x20, "testing JumpBackward: NOK");
+}
+
 void test_Sum1through9() {
     using PS = ProgramState<B00, B00, std::tuple<>, std::tuple<
         IncA, PushA,
@@ -151,11 +156,111 @@ void test_Sum1through9WithJumpBackward() {
         AddAB,
         PushA,
         SwapTop,
-        JumpBackward<B0D /* to loop head */>,
+        JumpBackward<B0C /* to loop head */>,
         // end
         PopA, PopA
     >, std::tuple<>>;
 
     //FIXME
-    // static_assert(Valued<VMStep<PS>>::VALUE == 0x24, "testing test_Sum1through9WithJumpBackward: NOK");
+    static_assert(Valued<VMStep<PS>>::VALUE == 0x24, "testing test_Sum1through9WithJumpBackward: NOK");
+}
+
+void test_Sum1through9LoopUnrolled() {
+    using PS = ProgramState<B00, B00, std::tuple<>, std::tuple<
+        PushA,
+        SetA<B08>, PushA,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // loop head
+        PopA, PushA, SetB<B00>,
+        EqAB,
+        JumpForwardIfA<B09 /* to end */>,
+        // loop body
+        PopA, PopB,
+        DecA, PushA, IncA,
+        AddAB,
+        PushA,
+        SwapTop,
+        Nop, // JumpBackward<B0D /* to loop head */>,
+        // end
+        PopA, PopA
+    >, std::tuple<>>;
+
+    //FIXME
+    static_assert(Valued<VMStep<PS>>::VALUE == 0x24, "testing test_Sum1through9LoopUnrolled: NOK");
 }
